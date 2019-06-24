@@ -1,0 +1,87 @@
+#ifndef __BOARD_H
+#define __BOARD_H
+
+//#include "stm32f0xx_hal.h"
+
+#define DBUG_UART	USART2
+
+
+/*	LED	*/
+#define KEY_TEST_LED_PORT		GPIOA
+#define KEY_TEST_LED_PIN		GPIO_PIN_6
+
+#define	RGB_TEST_LED_PORT		GPIOA
+#define	RGB_TEST_LED_PIN		GPIO_PIN_7
+
+#define	MMA_TEST_LED_PORT		GPIOB
+#define	MMA_TEST_LED_PIN		GPIO_PIN_0
+
+#define GYR_TEST_LED_PORT		GPIOB
+#define GYR_TEST_LED_PIN		GPIO_PIN_1
+
+#define KEY_BORAD_LED_PORT  GPIOA
+#define KEY_BORAD_LED_PIN 	GPIO_PIN_12
+
+/* IO KEY  */
+#define KEY_TEST_KEY_PORT		GPIOC
+#define KEY_TEST_KEY_PIN		GPIO_PIN_15
+
+#define	RGB_TEST_KEY_PORT		GPIOC
+#define	RGB_TEST_KEY_PIN		GPIO_PIN_13
+
+#define	MMA_TEST_KEY_PORT		GPIOC
+#define	MMA_TEST_KEY_PIN		GPIO_PIN_14
+
+#define GYR_TEST_KEY_PORT		GPIOA
+#define GYR_TEST_KEY_PIN		GPIO_PIN_8
+
+#define VOL_DEC_KEY_PORT  	GPIOA
+#define VOL_DEC_KEY_PIN 		GPIO_PIN_9
+
+
+/* SGM2032 */
+#define SGM_1V8_EN_PORT			GPIOA
+#define	SGM_1V8_EN_PIN			GPIO_PIN_15
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
+
+
+
