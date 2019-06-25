@@ -150,8 +150,6 @@ int main(void)
   
   app_printf("CPU Init End!!!\n");
   app_printf("CPU Reset SRC: %d\n",get_cpu_reset_source());
-
-
 	task_startup();
   /* USER CODE END 2 */
 
@@ -473,10 +471,13 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-
+  extern void test_tca8418(void);
+	extern int tca8418_configure(void);
+	tca8418_configure();
   /* Infinite loop */
   for(;;)
   {
+		test_tca8418();
     HAL_IWDG_Refresh(&hiwdg);
 		osDelay(1000);
   }

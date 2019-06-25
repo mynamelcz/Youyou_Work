@@ -8,6 +8,8 @@
 #include "board.h"
 
 #include "linux_list.h"
+#include "cbuf.h"
+
 #include "app_cfg.h"
 #include "typdef.h"
 #include "common.h"

@@ -6,6 +6,12 @@
 #define __ASSERT_PARAM
 #define DBUG_Printf 	printf		// MY_RTT_printf
 
+//====== ERR  =========//
+#define ERR_printf(res)		 DBUG_Printf("[%d][ERR][%s] Res: %d\n",__LINE__,__func__,res)
+
+
+
+
 #define DBUG_APP
 #define DBUG_DEV
 

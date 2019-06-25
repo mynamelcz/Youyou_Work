@@ -3,7 +3,21 @@
 
 //#include "stm32f0xx_hal.h"
 
-#define DBUG_UART	USART2
+#define DBUG_UART						USART2
+
+
+/*	Device IIC Addr */
+#define TC8418_IIC_W_ADDR			0x68
+#define TC8418_IIC_R_ADDR			0x69
+
+#define ST480MF_IIC_W_ADDR		0x1E
+#define ST480MF_IIC_R_ADDR		0x1F
+
+#define L3GD20_IIC_W_ADDR			0xD4
+#define L3GD20_IIC_R_ADDR			0xD5
+
+#define MMA8653_IIC_W_ADDR		0x3A
+#define MMA8653_IIC_R_ADDR		0x3B
 
 
 /*	LED	*/
