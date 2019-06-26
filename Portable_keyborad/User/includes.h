@@ -7,6 +7,8 @@
 
 #include "board.h"
 
+#include "dev_manager.h"
+
 #include "linux_list.h"
 #include "cbuf.h"
 

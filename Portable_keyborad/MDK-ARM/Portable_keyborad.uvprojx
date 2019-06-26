@@ -632,6 +632,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\timer.c</FilePath>
             </File>
+            <File>
+              <FileName>dev_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\dev_manager.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

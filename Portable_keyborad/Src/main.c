@@ -473,11 +473,14 @@ void StartDefaultTask(void const * argument)
   /* USER CODE BEGIN 5 */
   extern void test_tca8418(void);
 	extern int tca8418_configure(void);
+	extern void mma8653_test(void);
 	tca8418_configure();
   /* Infinite loop */
   for(;;)
   {
 		test_tca8418();
+		mma8653_test();
+		
     HAL_IWDG_Refresh(&hiwdg);
 		osDelay(1000);
   }
