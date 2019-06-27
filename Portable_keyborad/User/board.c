@@ -2,6 +2,9 @@
 #include "stm32f0xx_hal.h"
 #include "includes.h"
 
+struct __sys_inf sys_inf_g;
+
+
 u8  get_cpu_reset_source(void)
 {
 	uint8_t ret = 0;
@@ -30,6 +33,19 @@ u8  get_cpu_reset_source(void)
 	return ret;
 }
 
+
+
+void board_printf_sys_information(void)
+{
+  app_printf(">>******** 	Power On 	********<<\n");
+	app_printf(">>******** System_Information ********<<\n");
+	app_printf("Code date: "__DATE__" "__TIME__"\n\r"); 
+  app_printf("CPU Reset SRC: %d\n",get_cpu_reset_source());
+  app_printf("SystemCoreClock£º%dHz.\n\r",SystemCoreClock);
+	
+	
+	sys_inf_g.sys_clk = SystemCoreClock;
+}
 
 
 

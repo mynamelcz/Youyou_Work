@@ -2,6 +2,10 @@
 #define __BOARD_H
 
 //#include "stm32f0xx_hal.h"
+struct  __sys_inf{
+	unsigned int sys_clk;
+};
+extern struct __sys_inf sys_inf_g;
 
 #define DBUG_UART						USART2
 

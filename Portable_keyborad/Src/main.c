@@ -106,6 +106,7 @@ void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 extern u8  get_cpu_reset_source(void);
+extern void board_printf_sys_information(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -147,9 +148,8 @@ int main(void)
   MX_TIM1_Init();
   MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
-  
-  app_printf("CPU Init End!!!\n");
-  app_printf("CPU Reset SRC: %d\n",get_cpu_reset_source());
+  board_printf_sys_information();
+
 	task_startup();
   /* USER CODE END 2 */
 
@@ -474,13 +474,14 @@ void StartDefaultTask(void const * argument)
   extern void test_tca8418(void);
 	extern int tca8418_configure(void);
 	extern void mma8653_test(void);
+	extern void st480_test(void);
 	tca8418_configure();
   /* Infinite loop */
   for(;;)
   {
 		test_tca8418();
 		mma8653_test();
-		
+		st480_test();
     HAL_IWDG_Refresh(&hiwdg);
 		osDelay(1000);
   }
