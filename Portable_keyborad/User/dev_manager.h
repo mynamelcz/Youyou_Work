@@ -3,9 +3,9 @@
 
 typedef enum {
 		STATE_NO_ERR = 0,
-	  STATE_APPEAR_ERR,
+	    STATE_APPEAR_ERR,
 		STATE_INIT_ERR,
-	  STATE_DEV_ON_LINE,
+	    STATE_DEV_ON_LINE,
 		STATE_DEV_OFF_LINE,
 }status_t;
 

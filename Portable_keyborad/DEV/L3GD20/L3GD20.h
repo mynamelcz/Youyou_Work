@@ -9,31 +9,31 @@
 
 typedef struct _L3gd20_data
 {
-	  u8  temperature;
-    u16 angular_rateX;
-    u16 angular_rateY;
-    u16 angular_rateZ;
+	u8  temperature;
+    float angular_rateX;
+    float angular_rateY;
+    float angular_rateZ;
 }L3gd20_data_t;
 
 typedef union{
   s16 i16bit[3];
   u8 u8bit[6];
-} axis3bit16_t;
+}L3gd20_axis3bit16_t;
 
 typedef union{
   s16 i16bit;
-  u8 u8bit[2];
-} axis1bit16_t;
+  u8  u8bit[2];
+}L3gd20_axis1bit16_t;
 
 typedef union{
   s32 i32bit[3];
   u8 u8bit[12];
-} axis3bit32_t;
+}L3gd20_axis3bit32_t;
 
 typedef union{
   s32 i32bit;
   u8 u8bit[4];
-} axis1bit32_t;
+}L3gd20_axis1bit32_t;
 
 
 
