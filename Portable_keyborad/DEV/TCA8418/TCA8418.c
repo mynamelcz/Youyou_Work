@@ -178,10 +178,10 @@ static void tca8418_read_keypad(struct tca8418_keypad *keypad_data)
 /*
  * Configure the TCA8418 for keypad operation
  */
-u32 tca8418_configure(void)
+status_t tca8418_configure(void)
 {
-	u32 error;
-
+	
+  status_t error = STATE_NO_ERR;
 	/* Write config register, if this fails assume device not present */
 	error = tca8418_write_byte(REG_CFG,
 														 CFG_INT_CFG |				
@@ -202,11 +202,11 @@ u32 tca8418_configure(void)
 	return error;
 }
 
-u32 tca8418_init(void)
+status_t tca8418_init(void)
 {
-	u32 ret = 0;
+	status_t ret = STATE_NO_ERR;
 	ret = tca8418_configure();
-	if(ret){
+	if(ret != STATE_NO_ERR){
 		ERR_printf(ret);
 		return ret;
 	}
@@ -222,8 +222,11 @@ u32 tca8418_init(void)
 
 void test_tca8418(void)
 {
-	  tca8418_init();
-		tca8418_read_keypad(NULL);
+	static status_t state = STATE_INIT_ERR;
+	if(state == STATE_INIT_ERR){
+	  state = tca8418_init();
+	}
+	tca8418_read_keypad(NULL);
 }
 
 
