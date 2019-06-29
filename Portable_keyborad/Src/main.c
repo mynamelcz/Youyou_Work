@@ -479,9 +479,9 @@ void StartDefaultTask(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-		test_tca8418();
-		mma8653_test();
-		st480_test();
+		//test_tca8418();
+		//mma8653_test();
+		//st480_test();
 		L3gd20h_test();
     HAL_IWDG_Refresh(&hiwdg);
 		osDelay(1000);

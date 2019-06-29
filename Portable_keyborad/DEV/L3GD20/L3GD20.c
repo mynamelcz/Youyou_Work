@@ -42,7 +42,7 @@
 
 /* REG: CTRL4*/
 #define L3GD20H_CTRL4_REG                   0x23U
-#define BDU_MASK		(1<<7)
+#define BDU_MASK		  (1<<7)
 #define BLE_MASK    	(2<<6)
 #define FULL_SCALE_MASK		 (3<<4)
 
@@ -218,9 +218,9 @@ static u32 l3gd20h_gy_full_scale_get(u8 *val)
 */
 u32 l3gd20h_dev_status_get(u8 *val)
 {
-  u8 status;
+
   u32 ret;
-  ret = L3gd20h_read_reg(L3GD20H_STATUS_REG, (u8*)&status, 1);
+  ret = L3gd20h_read_reg(L3GD20H_STATUS_REG, (u8*)val, 1);
   return ret;
 }
 
@@ -257,14 +257,35 @@ static status_t L3gd20h_from_fs_to_mdps(float *ret, s16 lsb)
 }
 status_t L3gd20h_read_sensor_data(L3gd20_data_t *sensor_dat)
 {
-	u8 state = 0;
+	u8 state_reg = 0;
 	status_t error = STATE_NO_ERR;
 	L3gd20_axis3bit16_t xyz_dat;
-	l3gd20h_dev_status_get(&state);
-	if(state & ZYX_DAT_OK_MASK){
-	     L3gd20h_read_reg(L3GD20H_OUT_X_L_REG, (u8*)(&(xyz_dat.u8bit)), 6);
+	l3gd20h_dev_status_get(&state_reg);
+	dev_printf("state :0x%x\n",state_reg);
+	if(state_reg & ZYX_DAT_OK_MASK){
 		
-         L3gd20h_temperature_raw_get(&sensor_dat->temperature);
+		  if(state_reg & Z_DAT_OK_MASK){
+				L3gd20h_read_reg(L3GD20H_OUT_Z_L_REG, (u8*)(&xyz_dat.u8bit[4]), 1);
+				L3gd20h_read_reg(L3GD20H_OUT_Z_H_REG, (u8*)(&xyz_dat.u8bit[5]), 1);			
+			}
+		  if(state_reg & Y_DAT_OK_MASK){
+				L3gd20h_read_reg(L3GD20H_OUT_Y_L_REG, (u8*)(&xyz_dat.u8bit[2]), 1);
+				L3gd20h_read_reg(L3GD20H_OUT_Y_H_REG, (u8*)(&xyz_dat.u8bit[3]), 1);			
+			}
+		  if(state_reg & X_DAT_OK_MASK){
+				L3gd20h_read_reg(L3GD20H_OUT_X_L_REG, (u8*)(&xyz_dat.u8bit[0]), 1);
+				L3gd20h_read_reg(L3GD20H_OUT_X_H_REG, (u8*)(&xyz_dat.u8bit[1]), 1);			
+			}
+
+
+		  dev_puthex((const char *)xyz_dat.u8bit,6);
+      L3gd20h_temperature_raw_get(&sensor_dat->temperature);
+	 		dev_printf("[L3GD] T: 0x%x, X: %d, Y: %d, Z: %d\n",
+								sensor_dat->temperature,
+								xyz_dat.i16bit[0],
+	              xyz_dat.i16bit[1],
+								xyz_dat.i16bit[2]);		
+		
 		 error |= L3gd20h_from_fs_to_mdps(&sensor_dat->angular_rateX, xyz_dat.i16bit[0]);
 		 error |= L3gd20h_from_fs_to_mdps(&sensor_dat->angular_rateY, xyz_dat.i16bit[1]);
 		 error |= L3gd20h_from_fs_to_mdps(&sensor_dat->angular_rateZ, xyz_dat.i16bit[2]);
@@ -276,6 +297,22 @@ status_t L3gd20h_read_sensor_data(L3gd20_data_t *sensor_dat)
 	return STATE_NO_ERR;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 status_t L3gd20h_init(void)
 {
 	status_t state = STATE_NO_ERR;
@@ -287,12 +324,29 @@ status_t L3gd20h_init(void)
 		state = STATE_INIT_ERR;
 		return state;
 	}
+
 	l3gd20h_dev_data_format_set(Little_Endian);
-	l3gd20h_block_data_update_set(BDU_MASK);
+	l3gd20h_block_data_update_set(1);
 	l3gd20h_gy_full_scale_set(FULL_SCALE_2000DPS);
-	l3gd20h_gy_data_rate_set(ODR760HZ_Cut100HZ);
-	l3gd20h_gy_axis_set(XYZ_EN_MASK);
+	l3gd20h_gy_data_rate_set(ODR95HZ_Cut12_5HZ);
+	l3gd20h_gy_axis_set(Xen_MASK|Yen_MASK|Zen_MASK);
 	l3gd20h_dev_power_ctr(POWER_ON);
+	
+	
+//	u8 reg = 0;
+//	dev_printf("L3GD20H_WHO_AM_I_REG :0x%x\n",dev_id);
+//	L3gd20h_read_reg(L3GD20H_CTRL1_REG, (u8*)&reg, 1);
+//	dev_printf("L3GD20H_CTRL1_REG :0x%x\n",reg);
+//	L3gd20h_read_reg(L3GD20H_CTRL2_REG, (u8*)&reg, 1);
+//	dev_printf("L3GD20H_CTRL2_REG :0x%x\n",reg);	
+//	L3gd20h_read_reg(L3GD20H_CTRL3_REG, (u8*)&reg, 1);
+//	dev_printf("L3GD20H_CTRL3_REG :0x%x\n",reg);	
+//	L3gd20h_read_reg(L3GD20H_CTRL4_REG, (u8*)&reg, 1);
+//	dev_printf("L3GD20H_CTRL4_REG :0x%x\n",reg);	
+//	L3gd20h_read_reg(L3GD20H_CTRL5_REG, (u8*)&reg, 1);
+//	dev_printf("L3GD20H_CTRL5_REG :0x%x\n",reg);		
+	
+	return state;
 }
 
 
@@ -308,10 +362,16 @@ void L3gd20h_test(void)
 	L3gd20_data_t sensor_dat;
 	static status_t state = STATE_INIT_ERR;
 	if(state == STATE_INIT_ERR){
+	
 		state = L3gd20h_init();
 	}
-	
+
 	L3gd20h_read_sensor_data(&sensor_dat);
+//	dev_printf("[L3GD] T: 0x%x, X: %4.2f, Y: %4.2f, Z: %4.2f\n",
+//								sensor_dat.temperature,
+//								sensor_dat.angular_rateX,
+//	              sensor_dat.angular_rateY,
+//								sensor_dat.angular_rateZ);
 	
 }
 

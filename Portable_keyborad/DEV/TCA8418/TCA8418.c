@@ -183,21 +183,21 @@ status_t tca8418_configure(void)
 	
   status_t error = STATE_NO_ERR;
 	/* Write config register, if this fails assume device not present */
-	error = tca8418_write_byte(REG_CFG,
+	tca8418_write_byte(REG_CFG,
 														 CFG_INT_CFG |				
 														 CFG_OVR_FLOW_IEN |		
 														 CFG_KE_IEN);
 
 	tca8418_write_byte(REG_INT_STAT, 0x1F);			//clear
 	/* Set registers to keypad mode */
-	error |= tca8418_write_byte(REG_KP_GPIO1, KEY_ARRY_ROW);
-	error |= tca8418_write_byte(REG_KP_GPIO2, KEY_ARRY_COL_L);
-	error |= tca8418_write_byte(REG_KP_GPIO3, KEY_ARRY_COL_H);
+	tca8418_write_byte(REG_KP_GPIO1, KEY_ARRY_ROW);
+	tca8418_write_byte(REG_KP_GPIO2, KEY_ARRY_COL_L);
+	tca8418_write_byte(REG_KP_GPIO3, KEY_ARRY_COL_H);
 
 	/* Enable column debouncing */
-	error |= tca8418_write_byte(REG_DEBOUNCE_DIS1, KEY_ARRY_ROW);
-	error |= tca8418_write_byte(REG_DEBOUNCE_DIS2, KEY_ARRY_COL_L);
-	error |= tca8418_write_byte(REG_DEBOUNCE_DIS3, KEY_ARRY_COL_H);
+	tca8418_write_byte(REG_DEBOUNCE_DIS1, KEY_ARRY_ROW);
+	tca8418_write_byte(REG_DEBOUNCE_DIS2, KEY_ARRY_COL_L);
+	tca8418_write_byte(REG_DEBOUNCE_DIS3, KEY_ARRY_COL_H);
 
 	return error;
 }
@@ -210,8 +210,7 @@ status_t tca8418_init(void)
 		ERR_printf(ret);
 		return ret;
 	}
-	ret = cbuffer_init(&event_cbuft, tca_event_buf, TCA_EVENT_BUF_LEN);
-	if(ret){
+	if(cbuffer_init(&event_cbuft, tca_event_buf, TCA_EVENT_BUF_LEN)){
 		ERR_printf(ret);
 		return ret;
 	}

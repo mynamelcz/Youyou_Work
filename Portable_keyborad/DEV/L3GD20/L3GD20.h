@@ -5,7 +5,7 @@
 
 #define L3gd_iic_drv		IIC2_DRIVER_HDL
 
-#define L3GD20H_ID       0xD7U
+#define L3GD20H_ID       0xD4U
 
 typedef struct _L3gd20_data
 {
