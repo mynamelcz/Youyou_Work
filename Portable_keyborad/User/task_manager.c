@@ -31,8 +31,6 @@ void test_task(void const *param)
 		MMA_TEST_LED_TOL();		
 		GYR_TEST_LED_TOL();		
 		KEY_BORAD_LED_TOL();	
-
-
 		osDelay(500);	
 			
 

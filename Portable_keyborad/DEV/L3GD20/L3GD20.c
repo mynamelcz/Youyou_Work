@@ -316,7 +316,6 @@ status_t L3gd20h_read_sensor_data(L3gd20_data_t *sensor_dat)
 status_t L3gd20h_init(void)
 {
 	status_t state = STATE_NO_ERR;
-	u8 ctrl_reg = 0;
 	u8 dev_id = 0;
 	L3gd20h_read_reg(L3GD20H_WHO_AM_I_REG, (u8*)&dev_id, 1);
 	if(dev_id != L3GD20H_ID){

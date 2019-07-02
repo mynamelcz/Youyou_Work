@@ -8,7 +8,7 @@
 
 
 
-void my_memcpy(unsigned char *tar, const unsigned char *src, u32 len)
+static void my_memcpy(unsigned char *tar, const unsigned char *src, u32 len)
 {
   ASSERT(tar);
 	ASSERT(src);

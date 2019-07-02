@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM0;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\DEV\KEY;..\DEV\L3GD20;..\DEV\LED;..\DEV\MMA8653;..\DEV\ST480;..\DEV\TCA8418;..\User;..\Inc;..\Lib\key_dec;..\Lib\list;..\Drv\iic_drv;..\Lib\cbuf;..\Lib\myprintf</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM0;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\DEV\KEY;..\DEV\L3GD20;..\DEV\LED;..\DEV\MMA8653;..\DEV\ST480;..\DEV\TCA8418;..\User;..\Inc;..\Lib\key_dec;..\Lib\list;..\Drv\iic_drv;..\Lib\cbuf;..\Lib\myprintf;..\User\task;..\User\script</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -623,11 +623,6 @@
               <FilePath>..\User\common.c</FilePath>
             </File>
             <File>
-              <FileName>task_manager.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\task_manager.c</FilePath>
-            </File>
-            <File>
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\timer.c</FilePath>
@@ -656,6 +651,31 @@
               <FileName>my_printf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Lib\myprintf\my_printf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Task</GroupName>
+          <Files>
+            <File>
+              <FileName>test_board_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\task\test_board_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\task_manager.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Script</GroupName>
+          <Files>
+            <File>
+              <FileName>test_board_script.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\script\test_board_script.c</FilePath>
             </File>
           </Files>
         </Group>

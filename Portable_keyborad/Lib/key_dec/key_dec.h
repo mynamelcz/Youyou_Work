@@ -59,9 +59,9 @@ void key_state_detect(key_status_t *skey_t);
 #define Key_hd(fun_name)	(&key_##fun_name)
 #define Def_Key_Scan(fun_name) \
 key_status_t key_##fun_name = \
-{NO_KEY, \
- NO_KEY, \
- NO_KEY, \
+{__NO_KEY, \
+ __NO_KEY, \
+ __NO_KEY, \
  0,\
  0,\
  KEY_NULL,\
