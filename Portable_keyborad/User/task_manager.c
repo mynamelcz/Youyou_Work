@@ -56,6 +56,9 @@ void task_msg_pend(struct __task_hd_t *task, task_com_msg_t *msg_ptr)
   osEvent event;
   event.status = osOK;
 	task_com_msg_t *msg;
+	
+	ASSERT(task);
+	
   event = osMailGet(task->T_mail, portMAX_DELAY);
   if (event.status == osEventMail){
 			msg = (task_com_msg_t *)(event.value.p);
@@ -100,10 +103,31 @@ void task_create(struct __task_hd_t *task,
 
 
 
-void switch_to_spec_script(void)
+u32 switch_to_spec_script(struct __script_hd_t *script)
 {
-
-
+	ASSERT(script);
+	ASSERT(script->check);
+	ASSERT(script->exit);
+	ASSERT(script->init);
+	ASSERT(script->key_msg);
+  u32 ret = true;
+	if(Current_Script_ptr == NULL){
+		Current_Script_ptr = script;
+		if(Current_Script_ptr->check(NULL) == true){
+			ret = Current_Script_ptr->init(NULL);
+			return ret;
+		}
+		return false;
+	}
+	ret = Current_Script_ptr->exit(NULL);
+	if(ret == true){
+		Current_Script_ptr = script;
+		if(Current_Script_ptr->check(NULL) == true){
+			ret = Current_Script_ptr->init(NULL);
+			return ret;
+		}
+	}
+	return false;
 }
 void switch_to_next_script(void)
 {

@@ -18,6 +18,10 @@ struct __task_hd_t{
 struct __script_hd_t{
   struct __task_hd_t task;
 	const struct key_msg_t  *key_msg;
+	
+	u32 (*init)(void *pram);
+	u32 (*exit)(void *pram);
+	u32 (*check)(void *pram);	
 };
 
 
@@ -30,8 +34,6 @@ extern struct __script_hd_t Test_Board_Script;
 
 
 
-
-extern struct __task_hd_t TEST_BOARD_TASK;
 
 
 
@@ -54,7 +56,7 @@ void task_create(struct __task_hd_t *task,
 								UBaseType_t uxPriority,
 								u8 need_msg);
 
-
+u32 switch_to_spec_script(struct __script_hd_t *script);
 #endif
 
 

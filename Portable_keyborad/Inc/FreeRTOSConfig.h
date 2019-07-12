@@ -72,6 +72,8 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+
+#include "app_cfg.h"
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -97,31 +99,35 @@
 #define configUSE_PREEMPTION                     1
 #define configSUPPORT_STATIC_ALLOCATION          0
 #define configSUPPORT_DYNAMIC_ALLOCATION         1
-#define configUSE_IDLE_HOOK                      0
-#define configUSE_TICK_HOOK                      0
 #define configCPU_CLOCK_HZ                       ( SystemCoreClock )
 #define configTICK_RATE_HZ                       ((TickType_t)1000)
 #define configMAX_PRIORITIES                     ( 7 )
-#define configMINIMAL_STACK_SIZE                 ((uint16_t)128)
-#define configTOTAL_HEAP_SIZE                    ((size_t)3072)
+#define configMINIMAL_STACK_SIZE                 ((uint16_t)TASK_MIN_STACK_SIZE)
+#define configTOTAL_HEAP_SIZE                    ((size_t)3472)
 #define configMAX_TASK_NAME_LEN                  ( 16 )
 #define configUSE_16_BIT_TICKS                   0
 #define configUSE_MUTEXES                        1
 #define configQUEUE_REGISTRY_SIZE                8
 
+/***************						钩子函数配置						*****************/
+#define configUSE_MALLOC_FAILED_HOOK						1
+#define configUSE_IDLE_HOOK                     0
+#define configUSE_TICK_HOOK                     0
+
+
 
 /***************       		软件定时器相关配置          **************/
-#define configUSE_TIMERS 										1
+#define configUSE_TIMERS 												 1
 #if  (configUSE_TIMERS==1)
-	#define configTIMER_TASK_PRIORITY						   (configMAX_PRIORITIES-1)
+	#define configTIMER_TASK_PRIORITY						   TIMER_TASK_PRIO
 	#define configTIMER_QUEUE_LENGTH							 5
-	#define configTIMER_TASK_STACK_DEPTH					 (configMINIMAL_STACK_SIZE)
+	#define configTIMER_TASK_STACK_DEPTH					 (TIMER_TASK_STACK)
 #endif
 
 /***************     运行时间和任务状态收集有关的配置     **************/
 #define configGENERATE_RUN_TIME_STATS	        0                       //为1时启用运行时间统计功能
-#define configUSE_TRACE_FACILITY							0                  			//为1启用可视化跟踪调试
-#define configUSE_STATS_FORMATTING_FUNCTIONS	0                       //与宏configUSE_TRACE_FACILITY同时为1时会编译下面3个函数
+#define configUSE_TRACE_FACILITY							1                  			//为1启用可视化跟踪调试
+#define configUSE_STATS_FORMATTING_FUNCTIONS	1                       //与宏configUSE_TRACE_FACILITY同时为1时会编译下面3个函数
                                                                       //prvWriteNameToBuffer(),vTaskList(),
 /*==================================================================*/                                                                        //vTaskGetRunTimeStats()
 
@@ -155,7 +161,7 @@ to exclude the API function. */
 /* Normal assert() semantics without relying on the provision of an assert.h
 header file. */
 /* USER CODE BEGIN 1 */
-#define configASSERT( x ) if ((x) == 0) {taskDISABLE_INTERRUPTS(); for( ;; );} 
+#define configASSERT( x ) if ((x) == 0) {taskDISABLE_INTERRUPTS(); ERR_printf(0); for( ;; );} 
 /* USER CODE END 1 */
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS

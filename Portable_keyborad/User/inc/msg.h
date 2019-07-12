@@ -20,9 +20,11 @@ enum __msg{
 	
 	
 	/*Key Msg*/
-	TEST_G_SENSOR_MSG,
-	TEST_M_SENSOR_MSG,
-	
+	TEST_L3GD20_MSG,
+	TEST_MMA8653_MSG,
+	TEST_ST480_MSG,
+	TEST_TCA8418_MSG,
+
 
 	NO_KYE_MSG	=	0xffff,
 

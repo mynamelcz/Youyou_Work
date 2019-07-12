@@ -52,10 +52,9 @@ static void msg_issue_task(void *pram)
 			}
 			app_printf("key_id:%d\n",k_val.key_id);
 			if((k_msg > MAIN_TASK_MSG_MIN)&&(k_msg < MAIN_TASK_MSG_MAX)){
-				// task_msg_put(&Current_Script_ptr->task, 1, k_msg);
-			
-			}else{
 				 task_msg_put(&Main_Task, 1, k_msg);
+			}else{
+				 task_msg_put(&Current_Script_ptr->task, 1, k_msg);
 			}					
 		}
 	

@@ -23,6 +23,7 @@ static void main_task(void *pram)
 	(void)pram;
   task_com_msg_t msg;
 	
+	switch_to_spec_script(&Test_Board_Script);
   msg_issue_task_init(NULL);
 #if  (configUSE_TIMERS==1)	
 	init_timer_taask_fun();
@@ -38,7 +39,7 @@ static void main_task(void *pram)
 		
 		switch(msg.msg[0]){
 			 case HALF_SEC_MSG:
-				 app_printf("HALF_SEC_MSG\n");
+				 app_printf("Main HF_MSG\n");
 				 break;
 			 default:
 				 break;
