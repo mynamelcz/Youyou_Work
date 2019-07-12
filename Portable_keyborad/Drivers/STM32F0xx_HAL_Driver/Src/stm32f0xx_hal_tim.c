@@ -4415,7 +4415,7 @@ __weak void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(htim);
-  
+
   /* NOTE : This function Should not be modified, when the callback is needed,
             the __HAL_TIM_IC_CaptureCallback could be implemented in the user file
    */
