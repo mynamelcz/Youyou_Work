@@ -261,7 +261,6 @@ status_t L3gd20h_read_sensor_data(L3gd20_data_t *sensor_dat)
 	status_t error = STATE_NO_ERR;
 	L3gd20_axis3bit16_t xyz_dat;
 	l3gd20h_dev_status_get(&state_reg);
-	dev_printf("state :0x%x\n",state_reg);
 	if(state_reg & ZYX_DAT_OK_MASK){
 		
 		  if(state_reg & Z_DAT_OK_MASK){
@@ -277,14 +276,14 @@ status_t L3gd20h_read_sensor_data(L3gd20_data_t *sensor_dat)
 				L3gd20h_read_reg(L3GD20H_OUT_X_H_REG, (u8*)(&xyz_dat.u8bit[1]), 1);			
 			}
 
-
-		  dev_puthex((const char *)xyz_dat.u8bit,6);
-      L3gd20h_temperature_raw_get(&sensor_dat->temperature);
-	 		dev_printf("[L3GD] T: 0x%x, X: %d, Y: %d, Z: %d\n",
-								sensor_dat->temperature,
-								xyz_dat.i16bit[0],
-	              xyz_dat.i16bit[1],
-								xyz_dat.i16bit[2]);		
+			L3gd20h_temperature_raw_get(&sensor_dat->temperature);
+//		  dev_puthex((const char *)xyz_dat.u8bit,6);
+        
+//	 		dev_printf("[L3GD] T: 0x%x, X: %d, Y: %d, Z: %d\n",
+//								sensor_dat->temperature,
+//								xyz_dat.i16bit[0],
+//	              xyz_dat.i16bit[1],
+//								xyz_dat.i16bit[2]);		
 		
 		 error |= L3gd20h_from_fs_to_mdps(&sensor_dat->angular_rateX, xyz_dat.i16bit[0]);
 		 error |= L3gd20h_from_fs_to_mdps(&sensor_dat->angular_rateY, xyz_dat.i16bit[1]);

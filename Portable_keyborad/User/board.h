@@ -23,6 +23,10 @@ extern struct __sys_inf sys_inf_g;
 #define MMA8653_IIC_W_ADDR		0x3A		//º”ÀŸ∂»£∫g sensor
 #define MMA8653_IIC_R_ADDR		0x3B
 
+/* sensor INT IO*/
+#define ST480MF_INT_PORT    GPIOB
+#define ST480MF_INT_PIN     GPIO_PIN_8
+
 
 /*	LED	*/
 #define KEY_TEST_LED_PORT		GPIOA

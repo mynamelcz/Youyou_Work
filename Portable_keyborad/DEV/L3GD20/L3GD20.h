@@ -41,7 +41,7 @@ typedef union{
 
 status_t L3gd20h_init(void);
 
-
+status_t L3gd20h_read_sensor_data(L3gd20_data_t *sensor_dat);
 
 
 

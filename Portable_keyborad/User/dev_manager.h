@@ -1,6 +1,13 @@
 #ifndef __DEV_MANAGER_H
 #define __DEV_MANAGER_H
 
+
+
+
+
+
+
+
 typedef enum {
 		STATE_NO_ERR = 0,
 	  STATE_APPEAR_ERR,

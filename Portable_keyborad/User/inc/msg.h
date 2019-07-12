@@ -20,13 +20,18 @@ enum __msg{
 	
 	
 	/*Key Msg*/
-	TEST_L3GD20_MSG,
-	TEST_MMA8653_MSG,
-	TEST_ST480_MSG,
-	TEST_TCA8418_MSG,
+	TEST_KeyScan_TCA8418_MSG,
+	TEST_Magnetic_ST480M_MSG,
+	TEST_Acceleration_MMA8653_MSG,
+	TEST_AngularRate_L3GD20_MSG,
+	TEST_IO_KEY_MSG,
 
 
-	NO_KYE_MSG	=	0xffff,
+
+
+	
+	
+	NO_ANY_MSG	=	0xff,
 
 };
 

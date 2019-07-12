@@ -151,10 +151,6 @@ int main(void)
 	
   board_printf_sys_information();
 
-  if(bsp_dev_init() != STATE_NO_ERR){
-		app_printf("BSP Init dev error!!!\n");
-	}
-
 	main_task_init(NULL);
 
   /* USER CODE END 2 */

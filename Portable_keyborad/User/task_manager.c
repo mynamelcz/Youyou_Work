@@ -50,7 +50,7 @@ void task_msg_put(struct __task_hd_t *task, u8 num,...)
 	}	
 }
 	
-void task_msg_pend(struct __task_hd_t *task, task_com_msg_t *msg_ptr)
+osStatus task_msg_pend(struct __task_hd_t *task, task_com_msg_t *msg_ptr, uint32_t millisec)
 {
 	u8 i = 0;
   osEvent event;
@@ -59,18 +59,26 @@ void task_msg_pend(struct __task_hd_t *task, task_com_msg_t *msg_ptr)
 	
 	ASSERT(task);
 	
-  event = osMailGet(task->T_mail, portMAX_DELAY);
+  event = osMailGet(task->T_mail, millisec);
   if (event.status == osEventMail){
 			msg = (task_com_msg_t *)(event.value.p);
-  }else{
+		
+			msg_ptr->len = msg->len;
+			for(i = 0; i < msg_ptr->len; i++){
+				msg_ptr->msg[i] = msg->msg[i];
+			}		
+		
+  }else if(event.status == osEventTimeout){
+			msg_ptr->len = 0;
+			msg_ptr->msg[0] = NO_ANY_MSG;
+					
+	}else{
+		  msg_ptr->len = 0;
+			msg_ptr->msg[0] = NO_ANY_MSG;
 		ERR_printf(event.status);
 	}
-	msg_ptr->len = msg->len;
-	for(i = 0; i < msg_ptr->len; i++){
-		msg_ptr->msg[i] = msg->msg[i];
-	}
-
 	osMailFree(task->T_mail, (void *)event.value.p);
+	return event.status;
 }
 		
 	

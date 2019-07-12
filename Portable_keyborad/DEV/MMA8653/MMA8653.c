@@ -332,30 +332,38 @@ status_t mma8653_read_sensor_data(mma8653_data_t *sensor_dat)
 	u8 sensor_range = MMA8653_FULL_SCALE;
 	
 	u8 tmp_buff[6] = {0};
-	mma8653_read_buf(MMA8X5X_OUT_X_MSB_REG, tmp_buff, 6);
-
-	switch(sensor_range){
-		case FULL_SCALE_2G:
-				sensor_range = 2;
-			break;
-		case FULL_SCALE_4G:
-			  sensor_range = 4;
-			break;
-		case FULL_SCALE_8G:
-				sensor_range = 8;
-			break;
-		default:
-			ERR_printf(0);
-			status = STATE_APPEAR_ERR;
-			break;
-	}
-    sensor_dat->accelX = (u16)((u16)((u16)tmp_buff[0] << 8) | (u16)tmp_buff[1])/64U;
-    sensor_dat->accelY = (u16)((u16)((u16)tmp_buff[2] << 8) | (u16)tmp_buff[3])/64U;
-    sensor_dat->accelZ = (u16)((u16)((u16)tmp_buff[4] << 8) | (u16)tmp_buff[5])/64U;
 	
-    sensor_dat->accelX *= sensor_range;//
-    sensor_dat->accelY *= sensor_range;
-    sensor_dat->accelZ *= sensor_range;		
+	mma8653_read_buf(MMA8X5X_STATUS_REG, tmp_buff, 1);
+	if(tmp_buff[0] & STATUS_ZYXDR_MASK){
+		
+		mma8653_read_buf(MMA8X5X_OUT_X_MSB_REG, tmp_buff, 6);
+		switch(sensor_range){
+			case FULL_SCALE_2G:
+					sensor_range = 2;
+				break;
+			case FULL_SCALE_4G:
+					sensor_range = 4;
+				break;
+			case FULL_SCALE_8G:
+					sensor_range = 8;
+				break;
+			default:
+				ERR_printf(0);
+				status = STATE_APPEAR_ERR;
+			  return status;
+		}
+		sensor_dat->accelX = (u16)((u16)((u16)tmp_buff[0] << 8) | (u16)tmp_buff[1])/64U;
+		sensor_dat->accelY = (u16)((u16)((u16)tmp_buff[2] << 8) | (u16)tmp_buff[3])/64U;
+		sensor_dat->accelZ = (u16)((u16)((u16)tmp_buff[4] << 8) | (u16)tmp_buff[5])/64U;
+		
+		sensor_dat->accelX *= sensor_range;
+		sensor_dat->accelY *= sensor_range;
+		sensor_dat->accelZ *= sensor_range;	
+    status = STATE_NO_ERR;		
+		
+	}else{
+		status = STATE_APPEAR_ERR;	
+	}
 	return status;
 }
 

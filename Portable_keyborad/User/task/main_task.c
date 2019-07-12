@@ -1,7 +1,7 @@
 #include "main_task.h"
 #include "task_manager.h"
 #include "stm32f0xx_hal.h"
-
+#include "dev_manager.h"
 #include "timer_task.h"
 #include "msg_issue_task.h"
 
@@ -22,6 +22,14 @@ static void main_task(void *pram)
 {
 	(void)pram;
   task_com_msg_t msg;
+	osStatus state;
+	
+  if(bsp_dev_init() != STATE_NO_ERR){
+		app_printf("BSP Init dev error!!!\n");
+	}else{
+		
+	
+	}	
 	
 	switch_to_spec_script(&Test_Board_Script);
   msg_issue_task_init(NULL);
@@ -31,15 +39,19 @@ static void main_task(void *pram)
 	HAL_TIM_Base_Start_IT(&htim1);
 	while(1)
 	{
-		task_msg_pend(__this_task, &msg);
+		state = task_msg_pend(__this_task, &msg, osWaitForever);
+		if(state != osEventMail){
+			ERR_printf(state);
+			continue;
+		}
 		if(msg.msg[0] != HALF_SEC_MSG){
 			app_printf("Main Tsk:");
-			app_puthex((const char *)(&msg),msg.len+1);
+			app_puthex((const char *)(&msg),msg.len*4+1);
 		}
 		
 		switch(msg.msg[0]){
 			 case HALF_SEC_MSG:
-				 app_printf("Main HF_MSG\n");
+				 //app_printf("Main HF_MSG\n");
 				 break;
 			 default:
 				 break;

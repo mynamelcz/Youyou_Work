@@ -97,13 +97,20 @@
 static u8 tca_event_buf[TCA_EVENT_BUF_LEN];
 static struct cbuf_t event_cbuft;
 
+static u8 tca8418_key_val_put(struct tca8418_keypad *k_val)
+{
+	ASSERT(k_val);
+	return put_fifo(&event_cbuft, (const u8*)(k_val), sizeof(struct tca8418_keypad));
+}
+u8 tca8418_key_val_get(struct tca8418_keypad *k_val)
+{
+	ASSERT(k_val);
+	return get_fifo(&event_cbuft, (u8*)(k_val), sizeof(struct tca8418_keypad));
+}
 
 
 
 
-struct tca8418_keypad{
-	u8 key_id;
-};
 
 /*
  * Write a byte to the TCA8418
@@ -127,32 +134,35 @@ static int tca8418_read_byte(int reg, u8 *val)
 	return error;
 }
 
-static void tca8418_read_keypad(struct tca8418_keypad *keypad_data)
+void tca8418_read_keypad(void)
 {
 
 	u8 error = 0;
 	u8 ret = 0;
 	u8 event_cnt = 0;
+	struct tca8418_keypad keypad_data;
 	/* Initial read of the key event FIFO */
 	error |= tca8418_read_byte(REG_INT_STAT, &ret);
-	if(ret)
-		dev_printf("error = %d, REG_INT_STAT: 0x%x\n",error, ret);
+//	if(ret)
+//		dev_printf("error = %d, REG_INT_STAT: 0x%x\n",error, ret);
 
 	/* Matrix Key Event */
 	if(ret & INT_STAT_K_INT){			
 		 error |= tca8418_write_byte(REG_INT_STAT, INT_STAT_K_INT);		//clear
 		 error |= tca8418_read_byte(REG_KEY_LCK_EC, &ret);
 		 event_cnt = ret & 0x0F;
-		 dev_printf("event_cnt: %d\n", event_cnt);
 		 if(event_cnt){
 				while(event_cnt--){
 						error |= tca8418_read_byte(REG_KEY_EVENT_A, &ret);
             if(ret&KEY_EVENT_VALUE){
-								dev_printf("Press   Key ID: %d\n", ret&KEY_EVENT_CODE);	
+							keypad_data.k_state = TCA8418_KEY_PRESS;
 						}else{
-								dev_printf("Release Key ID: %d\n", ret&KEY_EVENT_CODE);
+							keypad_data.k_state = TCA8418_KEY_RELEASE;
 						}
-					  
+						keypad_data.k_id = ret&KEY_EVENT_CODE;
+						if(tca8418_key_val_put(&keypad_data) == 0){
+							ERR_printf(0);
+						}
 				}
 		 }
 	}
@@ -204,6 +214,7 @@ status_t tca8418_configure(void)
 
 status_t tca8418_init(void)
 {
+	u8 r_dat,i;
 	status_t ret = STATE_NO_ERR;
 	ret = tca8418_configure();
 	if(ret != STATE_NO_ERR){
@@ -213,6 +224,9 @@ status_t tca8418_init(void)
 	if(cbuffer_init(&event_cbuft, tca_event_buf, TCA_EVENT_BUF_LEN)){
 		ERR_printf(ret);
 		return ret;
+	}
+	for(i=0; i< 10; i++){
+		tca8418_read_byte(REG_KEY_EVENT_A+i, &r_dat);
 	}
 	return ret;
 }
@@ -225,7 +239,7 @@ void test_tca8418(void)
 	if(state == STATE_INIT_ERR){
 	  state = tca8418_init();
 	}
-	tca8418_read_keypad(NULL);
+	tca8418_read_keypad();
 }
 
 

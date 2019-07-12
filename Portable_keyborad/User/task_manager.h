@@ -6,7 +6,7 @@
 
 
 typedef struct {
-    u8 len;
+    u32 len;
     u32 msg[TASK_MSG_MAX_LEN];
 }task_com_msg_t;
 
@@ -46,7 +46,7 @@ void task_startup(void);
 
 
 
-void task_msg_pend(struct __task_hd_t *task, task_com_msg_t *msg_ptr);
+osStatus task_msg_pend(struct __task_hd_t *task, task_com_msg_t *msg_ptr, uint32_t millisec);
 void task_msg_put(struct __task_hd_t *task, u8 num,...);
 void task_create(struct __task_hd_t *task,
 								TaskFunction_t fun,

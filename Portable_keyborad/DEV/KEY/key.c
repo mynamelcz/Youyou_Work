@@ -18,13 +18,13 @@ static struct cbuf_t key_cbuft;
 static u8 get_key_id(void)
 {
 	if(HAL_GPIO_ReadPin(KEY_TEST_KEY_PORT, KEY_TEST_KEY_PIN) == GPIO_PIN_RESET){
-		return	KEY_TEST_KEY_ID;
+		return	KeyScan_TAC8418_TEST_KEY_ID;
 	}else if(HAL_GPIO_ReadPin(RGB_TEST_KEY_PORT, RGB_TEST_KEY_PIN) == GPIO_PIN_RESET){
-		return	RGB_TEST_KEY_ID;
+		return	Magnetic_ST480M_TEST_KEY_ID;
 	}else if(HAL_GPIO_ReadPin(MMA_TEST_KEY_PORT, MMA_TEST_KEY_PIN) == GPIO_PIN_RESET){
-		return	MMA_TEST_KEY_ID;
+		return	Acceleration_MMA8653_TEST_KEY_ID;
 	}else if(HAL_GPIO_ReadPin(GYR_TEST_KEY_PORT, GYR_TEST_KEY_PIN) == GPIO_PIN_RESET){
-		return	GYR_TEST_KEY_ID;
+		return	AngularRate_L3GD20_TEST_KEY_ID;
 	}else if(HAL_GPIO_ReadPin(VOL_DEC_KEY_PORT, VOL_DEC_KEY_PIN) == GPIO_PIN_RESET){
 		return	VOL_DEC_KEY_ID;
 	}else{

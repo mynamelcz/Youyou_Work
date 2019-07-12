@@ -24,10 +24,13 @@ static void msg_issue_task(void *pram)
  (void)pram;
 	struct key_val_t k_val;
 	
-	u32 k_msg = NO_KYE_MSG;
+	u32 k_msg = NO_ANY_MSG;
 	while(1)
 	{
 		osDelay(10);
+		if(Current_Script_ptr == NULL){
+			return;
+		}
 		if(key_val_get(&k_val) != 0){
 			switch(k_val.state){
 				case KEY_SHORT:

@@ -29,7 +29,7 @@ typedef struct _mma8653_data
 
 
 status_t mma8653_init(void);
-
+status_t mma8653_read_sensor_data(mma8653_data_t *sensor_dat);
 
 
 
