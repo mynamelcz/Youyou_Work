@@ -82,7 +82,7 @@
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
+            <UserProg1Name>fromelf --output .\Portable_keyborad\Project.bin --bin .\Portable_keyborad\*.axf</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>2</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F030xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM0;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\DEV\KEY;..\DEV\L3GD20;..\DEV\LED;..\DEV\MMA8653;..\DEV\ST480;..\DEV\TCA8418;..\User;..\Inc;..\Lib\key_dec;..\Lib\list;..\Drv\iic_drv;..\Lib\cbuf;..\Lib\myprintf;..\User\task;..\User\script</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32F0xx_HAL_Driver/Inc;../Drivers/STM32F0xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM0;../Drivers/CMSIS/Device/ST/STM32F0xx/Include;../Drivers/CMSIS/Include;..\DEV\KEY;..\DEV\L3GD20;..\DEV\LED;..\DEV\MMA8653;..\DEV\ST480;..\DEV\TCA8418;..\User;..\Inc;..\Lib\key_dec;..\Lib\list;..\Drv\iic_drv;..\Lib\cbuf;..\Lib\myprintf;..\User\task;..\User\script;..\User\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -360,7 +360,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>1</umfTarg>
+            <umfTarg>0</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -369,7 +369,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>Portable_keyborad\Portable_keyborad.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -632,6 +632,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\dev_manager.c</FilePath>
             </File>
+            <File>
+              <FileName>task_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\task_manager.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -658,14 +663,19 @@
           <GroupName>Task</GroupName>
           <Files>
             <File>
-              <FileName>test_board_task.c</FileName>
+              <FileName>main_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\task\test_board_task.c</FilePath>
+              <FilePath>..\User\task\main_task.c</FilePath>
             </File>
             <File>
-              <FileName>task_manager.c</FileName>
+              <FileName>msg_issue_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\User\task_manager.c</FilePath>
+              <FilePath>..\User\task\msg_issue_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\task\timer_task.c</FilePath>
             </File>
           </Files>
         </Group>

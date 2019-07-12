@@ -109,6 +109,34 @@
 #define configUSE_MUTEXES                        1
 #define configQUEUE_REGISTRY_SIZE                8
 
+
+/***************       		软件定时器相关配置          **************/
+#define configUSE_TIMERS 										1
+#if  (configUSE_TIMERS==1)
+	#define configTIMER_TASK_PRIORITY						   (configMAX_PRIORITIES-1)
+	#define configTIMER_QUEUE_LENGTH							 5
+	#define configTIMER_TASK_STACK_DEPTH					 (configMINIMAL_STACK_SIZE)
+#endif
+
+/***************     运行时间和任务状态收集有关的配置     **************/
+#define configGENERATE_RUN_TIME_STATS	        0                       //为1时启用运行时间统计功能
+#define configUSE_TRACE_FACILITY							0                  			//为1启用可视化跟踪调试
+#define configUSE_STATS_FORMATTING_FUNCTIONS	0                       //与宏configUSE_TRACE_FACILITY同时为1时会编译下面3个函数
+                                                                      //prvWriteNameToBuffer(),vTaskList(),
+/*==================================================================*/                                                                        //vTaskGetRunTimeStats()
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES                    0
 #define configMAX_CO_ROUTINE_PRIORITIES          ( 2 )

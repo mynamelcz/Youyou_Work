@@ -28,7 +28,7 @@ typedef struct _mma8653_data
 
 
 
-
+status_t mma8653_init(void);
 
 
 

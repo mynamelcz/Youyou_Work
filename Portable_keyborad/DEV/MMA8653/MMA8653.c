@@ -321,8 +321,6 @@ status_t mma8653_init(void)
 		ERR_printf(r_dat);
 		return STATE_INIT_ERR;
 	}	
-
-  dev_printf("mma8653_init 0k\n");
 	return STATE_NO_ERR;
 }
 

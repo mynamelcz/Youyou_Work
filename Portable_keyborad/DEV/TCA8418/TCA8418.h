@@ -10,7 +10,7 @@
 
 
 
-
+status_t tca8418_init(void);
 
 
 

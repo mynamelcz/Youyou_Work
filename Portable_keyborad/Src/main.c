@@ -55,12 +55,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "task_manager.h"
+#include "dev_manager.h"
 #include "includes.h"
 #include "board.h"
-#include "timer.h"
+#include "main_task.h"
 #include "led.h"
-
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -148,9 +147,16 @@ int main(void)
   MX_TIM1_Init();
   MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
+
+	
   board_printf_sys_information();
 
-	task_startup();
+  if(bsp_dev_init() != STATE_NO_ERR){
+		app_printf("BSP Init dev error!!!\n");
+	}
+
+	main_task_init(NULL);
+
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -167,7 +173,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, 6, 0, 64);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -348,7 +354,7 @@ static void MX_TIM1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN TIM1_Init 2 */
-  HAL_TIM_Base_Start_IT(&htim1);
+//  HAL_TIM_Base_Start_IT(&htim1);
   /* USER CODE END TIM1_Init 2 */
 
 }
@@ -426,7 +432,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : PC13 PC14 PC15 */
   GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PA6 PA7 PA12 PA15 */
@@ -446,7 +452,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : PA8 PA9 */
   GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
@@ -471,18 +477,11 @@ void StartDefaultTask(void const * argument)
 {
 
   /* USER CODE BEGIN 5 */
-  extern void test_tca8418(void);
-	extern void mma8653_test(void);
-	extern void st480_test(void);
-	extern void L3gd20h_test(void);
 
   /* Infinite loop */
   for(;;)
   {
-		//test_tca8418();
-		//mma8653_test();
-		//st480_test();
-		L3gd20h_test();
+
     HAL_IWDG_Refresh(&hiwdg);
 		osDelay(1000);
   }

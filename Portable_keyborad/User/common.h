@@ -15,6 +15,9 @@
 
 
 
+#define __AT_SEC(X)			__attribute__ ((section(#X)))
+#define __AT_ADDR(X)	  __attribute__ ((AT(X)))
+
 #ifdef __ASSERT_PARAM
 void assert_fail(u8* file, u32 line);
 #define ASSERT(expr) ((expr) ? (void)0U : assert_fail((u8 *)__FILE__, __LINE__))

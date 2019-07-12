@@ -3,6 +3,8 @@
 #include "includes.h"
 #include "stdlib.h"
 
+extern TIM_HandleTypeDef htim1;
+
 #define IRQ_HdlList(fun, time)	&(fun##irq.list)
 #define IRQ_Hdl(fun)	    	&(fun##irq)	
 
@@ -10,8 +12,10 @@
 LIST_HEAD(TIM1_IRQHandler_ListHead);
 	
 void register_timer1_handler(__irq_hd_t *hd_t)
-{
-	list_add_tail(&hd_t->list, &TIM1_IRQHandler_ListHead);	
+{	
+	HAL_TIM_Base_Stop_IT(&htim1);
+	list_add_tail(&hd_t->list, &TIM1_IRQHandler_ListHead);		
+	HAL_TIM_Base_Start_IT(&htim1);
 }	
 	
 void register_timer1_handler_malloc(void(*fun)(void), u32 time)
@@ -24,9 +28,14 @@ void register_timer1_handler_malloc(void(*fun)(void), u32 time)
 	hd_t->list.next = &(hd_t->list);
 	hd_t->list.prev = &(hd_t->list);
 	
-	list_add_tail(&hd_t->list, &TIM1_IRQHandler_ListHead);	
+	register_timer1_handler(hd_t);
+//	list_add_tail(&hd_t->list, &TIM1_IRQHandler_ListHead);	
 }	
 	
+
+
+
+
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
@@ -44,7 +53,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			}	
 		}	  	
 	}
-
 }
 
 

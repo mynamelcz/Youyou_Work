@@ -6,13 +6,13 @@
 
 
 
-#define DOUBLE_KEY_EN       1
+#define DOUBLE_KEY_EN       0
 
-#define KEY_FILTER_TIME     5      //按键消抖时间 10ms
-#define KEY_LONG_TIME       400    //按键长按时间 2s
-#define KEY_REPEAT_TIME     (KEY_LONG_TIME+100)     
-#define KEY_DOUBLE_MIN      10     //双击按键最小间隔 100ms
-#define KEY_DOUBLE_MAX      350     //双击按键最大间隔 300ms
+#define KEY_FILTER_TIME     5      //按键消抖时间 
+#define KEY_LONG_TIME       80    //按键长按时间 
+#define KEY_REPEAT_TIME     (KEY_LONG_TIME+10)     
+#define KEY_DOUBLE_MIN      10     //双击按键最小间隔 
+#define KEY_DOUBLE_MAX      30     //双击按键最大间隔 
 
 
 typedef enum _key_msg{

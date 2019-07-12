@@ -39,7 +39,7 @@ typedef union{
 
 
 
-
+status_t L3gd20h_init(void);
 
 
 

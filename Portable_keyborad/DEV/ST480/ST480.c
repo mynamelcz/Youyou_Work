@@ -104,28 +104,28 @@ static status_t st480_read_measure(st480_data_t *sensor_dat)
 		return STATE_NO_ERR;
 		
 }
-static status_t st480_read_register(u8 reg_addr, u16 *reg_dat)
-{
-	  u8 w_temp[2] ={0};
-	  u8 r_temp[10]={0};
-		u8 state = 0;
-		w_temp[0] = READ_REGISTER_CMD;
-		w_temp[1] = reg_addr;
-		st480_write_buf(w_temp,2);		
-		st480_read_buf(r_temp, 3);
-		
-		state = r_temp[0];
+//static status_t st480_read_register(u8 reg_addr, u16 *reg_dat)
+//{
+//	  u8 w_temp[2] ={0};
+//	  u8 r_temp[10]={0};
+//		u8 state = 0;
+//		w_temp[0] = READ_REGISTER_CMD;
+//		w_temp[1] = reg_addr;
+//		st480_write_buf(w_temp,2);		
+//		st480_read_buf(r_temp, 3);
+//		
+//		state = r_temp[0];
 
-		*reg_dat = ((u16)(r_temp[1]) << 8) + (u16)(r_temp[2]);
- 		
-		if(state & STATE_ERROR_MASK){
-			ERR_printf(state);
-			return STATE_APPEAR_ERR;
-		}		
-		
-		return STATE_NO_ERR;
-		
-}
+//		*reg_dat = ((u16)(r_temp[1]) << 8) + (u16)(r_temp[2]);
+// 		
+//		if(state & STATE_ERROR_MASK){
+//			ERR_printf(state);
+//			return STATE_APPEAR_ERR;
+//		}		
+//		
+//		return STATE_NO_ERR;
+//		
+//}
 
 
 static status_t st480_send_cmd(u8 cmd)

@@ -16,6 +16,8 @@
 #include "typdef.h"
 #include "common.h"
 
+#include "msg.h"
+
 
 
 

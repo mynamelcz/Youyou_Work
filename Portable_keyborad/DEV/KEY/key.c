@@ -1,5 +1,5 @@
 #include "key.h"
-#include "key_dec.h"
+
 #include "includes.h"
 #include "stm32f0xx_hal.h"
 #include "timer.h"
@@ -8,7 +8,6 @@
 
 
 static u8 get_key_id(void);
-
 #define KEY_SCAN_NAME	get_key_id	//按键扫描函数
 Def_Key_Scan(KEY_SCAN_NAME);		  //定义，初始化 按键扫描结构 
 
@@ -35,10 +34,12 @@ static u8 get_key_id(void)
 
 static u8 key_val_put(struct key_val_t *k_val)
 {
+	ASSERT(k_val);
 	return put_fifo(&key_cbuft, (const u8*)(k_val), sizeof(struct key_val_t));
 }
 u8 key_val_get(struct key_val_t *k_val)
 {
+	ASSERT(k_val);
 	return get_fifo(&key_cbuft, (u8*)(k_val), sizeof(struct key_val_t));
 }
 
@@ -51,7 +52,8 @@ static void key_scan_isr_loop(void)
 	GetKeyMsg(KEY_SCAN_NAME,key_id,key_state);
 	if(key_id != __NO_KEY){
       k_val.key_id =  key_id;
-			k_val.state =   key_state;
+			k_val.state  =  key_state;
+
 		  ret = key_val_put(&k_val);
 		  if(ret == 0){
 				ERR_printf(ret);
@@ -60,8 +62,15 @@ static void key_scan_isr_loop(void)
 }
 
 
+
 void key_detect_init(void)
 {
 	cbuffer_init(&key_cbuft, key_val_cbuf, KEY_VAL_CBUF_LEN);
 	register_timer1_handler_malloc(key_scan_isr_loop,10);
 }
+
+
+
+
+
+
