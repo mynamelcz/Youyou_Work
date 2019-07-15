@@ -1,6 +1,8 @@
 #include "ST480.h"
 #include "iic_drv.h"
 #include "includes.h"
+#include "stm32f0xx_hal.h"
+
 
 #define MEASURE_T_MASK	(1<<0)
 #define MEASURE_X_MASK	(1<<1)
@@ -45,13 +47,7 @@
 #define RESET_CMD 						 0xF0
 
 
-typedef struct _st480_data
-{
-	  u16 temperature;
-    u16 magneticX;
-    u16 magneticY;
-    u16 magneticZ;
-}st480_data_t;
+
 
 
 
@@ -90,12 +86,12 @@ static status_t st480_read_measure(st480_data_t *sensor_dat)
 		sensor_dat->magneticY   = ((u16)(r_temp[5]) << 8) + (u16)(r_temp[6]);	
 		sensor_dat->magneticZ   = ((u16)(r_temp[7]) << 8) + (u16)(r_temp[8]);		
 		
-		dev_printf("state: 0x%x\n",state);
-		dev_printf("ST480---");
-		dev_printf("T: 0x%x, ",sensor_dat->temperature);
-		dev_printf("m_X: 0x%x, ",sensor_dat->magneticX);
-		dev_printf("m_Y: 0x%x, ",sensor_dat->magneticY);
-		dev_printf("m_Z: 0x%x\n",sensor_dat->magneticZ);
+//		dev_printf("state: 0x%x\n",state);
+//		dev_printf("ST480---");
+//		dev_printf("T: 0x%x, ",sensor_dat->temperature);
+//		dev_printf("m_X: 0x%x, ",sensor_dat->magneticX);
+//		dev_printf("m_Y: 0x%x, ",sensor_dat->magneticY);
+//		dev_printf("m_Z: 0x%x\n",sensor_dat->magneticZ);
 		
 		if(state & STATE_ERROR_MASK){
 			ERR_printf(state);
@@ -146,20 +142,42 @@ static status_t st480_send_cmd(u8 cmd)
 		return STATE_NO_ERR;
 }
 
-void st480_test(void)
+
+static u8 is_st480_data_ready(void)
 {
-	u8 static flg = 0;
-	flg++;
-	st480_data_t sensor_dat;
-	if(flg&0x1){
-		st480_send_cmd(MEASUREMENT_MODE_CMD);
-	}else{
-		st480_read_measure(&sensor_dat);
+	if(HAL_GPIO_ReadPin(ST480MF_INT_PORT, ST480MF_INT_PIN) == GPIO_PIN_SET){
+		return true;
 	}
-	
-	
-	//
+	return false;
 }
+status_t st480_read_sensor_data(st480_data_t *sensor_dat)
+{
+	status_t status = STATE_NO_ERR;	
+	if(is_st480_data_ready()){
+		status = st480_read_measure(sensor_dat);
+	}else{
+		st480_send_cmd(MEASUREMENT_MODE_CMD);
+		status = STATE_APPEAR_ERR;
+	}
+	return status;
+
+}
+
+
+//void st480_test(void)
+//{
+//	u8 static flg = 0;
+//	flg++;
+//	st480_data_t sensor_dat;
+//	if(flg&0x1){
+//		st480_send_cmd(MEASUREMENT_MODE_CMD);
+//	}else{
+//		st480_read_measure(&sensor_dat);
+//	}
+//	
+//	
+//	//
+//}
 
 
 

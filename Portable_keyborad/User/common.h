@@ -3,6 +3,9 @@
 #include "includes.h"
 
 
+
+
+
 #define BIT(x)  			(1<<x)
 #define STE_BIT(x,b)  do{x |=  BIT(b);}while(0)
 #define CLR_BIT(x,b)  do{x &= ~BIT(b);}while(0)
@@ -14,9 +17,6 @@
 #define BITS_SET(x,s,n,v)	do{x= (x&(~(N_BIT1(n)<<s)))|(v<<s);}while(0)
 
 
-
-#define __AT_SEC(X)			__attribute__ ((section(#X)))
-#define __AT_ADDR(X)	  __attribute__ ((AT(X)))
 
 #ifdef __ASSERT_PARAM
 void assert_fail(u8* file, u32 line);

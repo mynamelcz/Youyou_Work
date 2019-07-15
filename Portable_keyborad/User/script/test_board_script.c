@@ -1,7 +1,8 @@
 #include "test_board_script.h"
 #include "task_manager.h"
 #include "dev_manager.h"
-
+#include "stm32f0xx_hal.h"
+#include "led.h"
 #include "key.h"
 #include "l3gd20.h"
 #include "mma8653.h"
@@ -13,6 +14,67 @@ static struct __script_hd_t *const __this_script_hd	=	&Test_Board_Script;
 
 
 
+
+enum __led_state{
+	LED_ON,
+	LED_OFF,
+	LED_TOGGLE,
+};
+
+
+
+
+void led_control(u8 state, u8 who)
+{
+	switch(state){
+		case LED_ON:
+		  switch(who){
+				case TEST_KeyScan_TCA8418_MSG:
+					RGB_TEST_LED(0);KEY_TEST_LED(1);MMA_TEST_LED(0);GYR_TEST_LED(0);
+					break;
+				case TEST_Magnetic_ST480M_MSG:
+					RGB_TEST_LED(1);KEY_TEST_LED(0);MMA_TEST_LED(0);GYR_TEST_LED(0);
+					break;
+				case TEST_Acceleration_MMA8653_MSG:
+					RGB_TEST_LED(0);KEY_TEST_LED(0);MMA_TEST_LED(1);GYR_TEST_LED(0);
+					break;
+				case TEST_AngularRate_L3GD20_MSG:
+					RGB_TEST_LED(0);KEY_TEST_LED(0);MMA_TEST_LED(0);GYR_TEST_LED(1);
+					break;
+				default:
+					break;
+			}
+			break;
+		case LED_OFF:
+			RGB_TEST_LED(0);
+		  KEY_TEST_LED(0);
+		  MMA_TEST_LED(0);
+		  GYR_TEST_LED(0);
+		  KEY_BORAD_LED(0);
+			break;		
+		case LED_TOGGLE:
+		  switch(who){
+				case TEST_KeyScan_TCA8418_MSG:
+					KEY_TEST_LED_TOL();
+				  KEY_BORAD_LED_TOL();
+					break;
+				case TEST_Magnetic_ST480M_MSG:
+					RGB_TEST_LED_TOL();
+					break;
+				case TEST_Acceleration_MMA8653_MSG:
+					MMA_TEST_LED_TOL();
+					break;
+				case TEST_AngularRate_L3GD20_MSG:
+					GYR_TEST_LED_TOL();
+					break;
+				default:
+					break;
+			}
+			break;
+		default:
+			break;
+	}
+}
 
 
 
@@ -26,9 +88,14 @@ static void test_board_script(void *pram)
   struct tca8418_keypad k_val;	
 	L3gd20_data_t  l3gd20_dat;
 	mma8653_data_t mma8653_dat;
+	st480_data_t   st480_dat;
 	
 	task_com_msg_t msg;
 	tb_script_printf("FUN:%s\n",__FUNCTION__);
+	
+	
+	SGM_1V8_EN(1);
+	led_control(LED_OFF, 0);
 	while(1)
 	{
 		state = task_msg_pend(&__this_script_hd->task, &msg, 100);
@@ -40,10 +107,12 @@ static void test_board_script(void *pram)
 			switch(msg.msg[0]){
 				case HALF_SEC_MSG:
 				//	 tb_script_printf("script HF_MSG\n");
+				   
 					 break;
 				
 				case TEST_IO_KEY_MSG:
-					
+					tb_script_printf("TEST_IO_KEY_MSG\n");
+					KEY_BORAD_LED_TOL();
 					break;
 				case TEST_KeyScan_TCA8418_MSG:
 					tb_script_printf("KeyScan_TCA8418\n");
@@ -53,11 +122,13 @@ static void test_board_script(void *pram)
 						ERR_printf(dev_st);
 					}else{
 						test_mode = TEST_KeyScan_TCA8418_MSG;
+						led_control(LED_ON, test_mode);
 					}
 					break;
 				case TEST_Magnetic_ST480M_MSG:
 					tb_script_printf("Magnetic_ST480M\n");
 					test_mode = TEST_Magnetic_ST480M_MSG;
+				  led_control(LED_ON, test_mode);
 					break;
 				case TEST_Acceleration_MMA8653_MSG:
 					tb_script_printf("Acceleration_MMA8653\n");
@@ -67,6 +138,7 @@ static void test_board_script(void *pram)
 						ERR_printf(dev_st);
 					}else{
 						test_mode = TEST_Acceleration_MMA8653_MSG;
+						led_control(LED_ON, test_mode);
 					}
 					break;
 				case TEST_AngularRate_L3GD20_MSG:
@@ -77,6 +149,7 @@ static void test_board_script(void *pram)
 						ERR_printf(dev_st);
 					}else{
 						test_mode = TEST_AngularRate_L3GD20_MSG;
+						led_control(LED_ON, test_mode);
 					}
 					break;
 				default:
@@ -89,15 +162,26 @@ static void test_board_script(void *pram)
 					 tca8418_read_keypad();
 					 if(tca8418_key_val_get(&k_val) != 0){
 						 tb_script_printf("KEY: %d ,%d\n",k_val.k_state,k_val.k_id);
+						 led_control(LED_TOGGLE, test_mode);
 					 }
 					break;
 				case TEST_Magnetic_ST480M_MSG:
-			
-					
+			     dev_st = st480_read_sensor_data(&st480_dat);
+				   if(dev_st == STATE_NO_ERR){
+						 led_control(LED_TOGGLE, test_mode);
+						 tb_script_printf("[ST480] T: 0x%x, X: %x, Y: %x, Z: %x\n",
+															st480_dat.temperature,
+															st480_dat.magneticX,
+															st480_dat.magneticY,
+															st480_dat.magneticZ);					 
+					 }else{
+					 
+					 }
 					break;
 				case TEST_Acceleration_MMA8653_MSG:
 						dev_st = mma8653_read_sensor_data(&mma8653_dat);
 						if(dev_st == STATE_NO_ERR){
+							led_control(LED_TOGGLE, test_mode);
 							tb_script_printf("[MMA] X: %d, Y: %d, Z: %d\n",
 														mma8653_dat.accelX,
 														mma8653_dat.accelY,
@@ -107,6 +191,7 @@ static void test_board_script(void *pram)
 				case TEST_AngularRate_L3GD20_MSG:
 						dev_st = L3gd20h_read_sensor_data(&l3gd20_dat);
 						if(dev_st == STATE_NO_ERR){
+							led_control(LED_TOGGLE, test_mode);
 							tb_script_printf("[L3GD] T: 0x%x, X: %4.2f, Y: %4.2f, Z: %4.2f\n",
 														l3gd20_dat.temperature,
 														l3gd20_dat.angular_rateX,
@@ -174,6 +259,7 @@ static const struct key_msg_t task_key_msg = {
 /*08*/		NO_ANY_MSG,
 /*09*/		NO_ANY_MSG,
 	},
+#if(APP_LONG_KEY_EN)
 	.long_msg		={
 /*00*/		NO_ANY_MSG,
 /*01*/		NO_ANY_MSG,
@@ -186,6 +272,8 @@ static const struct key_msg_t task_key_msg = {
 /*08*/		NO_ANY_MSG,
 /*09*/		NO_ANY_MSG,	
 	},
+#endif
+#if(APP_DOUBLE_KEY_EN)
 	.double_msg	={
 /*00*/		NO_ANY_MSG,
 /*01*/		NO_ANY_MSG,
@@ -198,6 +286,8 @@ static const struct key_msg_t task_key_msg = {
 /*08*/		NO_ANY_MSG,
 /*09*/		NO_ANY_MSG,	
 	},
+#endif
+#if(APP_REPEAT_KEY_EN)
 	.repeat_msg	={
 /*00*/		NO_ANY_MSG,
 /*01*/		NO_ANY_MSG,
@@ -222,6 +312,10 @@ static const struct key_msg_t task_key_msg = {
 /*08*/		NO_ANY_MSG,
 /*09*/		NO_ANY_MSG,	
 	},
+#endif
+
+
+
 };
 
 

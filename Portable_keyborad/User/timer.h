@@ -7,12 +7,17 @@ typedef struct{
 	u32  cnt;
 	void (*hdl_fun)(void);
 	struct list_head list;
-}__irq_hd_t;
+}Tirq_hd_t;
 
+typedef struct{
+	u32  time;
+	u32  cnt;
+	void (*hdl_fun)(void);
+}Tirq_sec_hd_t;
 
 
 #define __IRQ_HdlTypedef(fun, times) 	   \
- 	 __irq_hd_t fun##irq = {			   \
+ 	  Tirq_hd_t fun##irq = {			   \
 	 .time  = times,					   \
 	 .cnt   = 0,						   \
 	 .hdl_fun = fun,          			   \
@@ -25,7 +30,7 @@ typedef struct{
 	
 	
 	
-void register_timer1_handler(__irq_hd_t *hd_t);
+void register_timer1_handler(Tirq_hd_t *hd_t);
 void register_timer1_handler_malloc(void(*fun)(void), u32 time);
 	
 	

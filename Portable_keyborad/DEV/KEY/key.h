@@ -24,13 +24,19 @@ struct key_val_t{
 };
 
 
-#define KEY_NUM_TOTAL		10
+
 struct key_msg_t{
-	u16 short_msg[KEY_NUM_TOTAL];
-	u16 long_msg[KEY_NUM_TOTAL];
-	u16 double_msg[KEY_NUM_TOTAL];
-	u16 repeat_msg[KEY_NUM_TOTAL];
-	u16 repeat_up_msg[KEY_NUM_TOTAL];
+	u16 short_msg[APP_TOTAL_KEY_NUM];
+#if(APP_LONG_KEY_EN)
+	u16 long_msg[APP_TOTAL_KEY_NUM];
+#endif
+#if(APP_DOUBLE_KEY_EN)
+	u16 double_msg[APP_TOTAL_KEY_NUM];
+#endif
+#if(APP_REPEAT_KEY_EN)
+	u16 repeat_msg[APP_TOTAL_KEY_NUM];
+	u16 repeat_up_msg[APP_TOTAL_KEY_NUM];
+#endif
 };
 
 void key_detect_init(void);

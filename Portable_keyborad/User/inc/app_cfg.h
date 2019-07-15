@@ -49,6 +49,18 @@
 #endif
 
 
+/**************		Common	 ***********/
+#define PRINT_OS_INF						0 
+
+
+#define APP_TOTAL_KEY_NUM				10
+#define APP_LONG_KEY_EN					0
+#define APP_REPEAT_KEY_EN				0
+#define APP_DOUBLE_KEY_EN				0
+
+
+
+
 /***************	Task	**************/
 //common
 #define TASK_MSG_Q_NUM					4
