@@ -64,7 +64,10 @@ static u8  get_cpu_reset_source(void)
 	return ret;
 }
 
-
+#ifdef STM32F030xC
+//#define __CHIP_FLASH_SIZE_ADDR		0x1FFFF7A8
+#define __CHIP_ID_ADDR						0x1FFFF7AC
+#endif
 
 void board_printf_sys_information(void)
 {
@@ -76,7 +79,20 @@ void board_printf_sys_information(void)
   app_printf("SystemCoreClock£º%dHz.\n\r",SystemCoreClock);
 	
 	printf_mem_information();
+	
+	unsigned int *chip_id_ptr =  (unsigned int *)(__CHIP_ID_ADDR);
+	
 	sys_inf_g.sys_clk = SystemCoreClock;
+	
+	sys_inf_g.chip_ID[0] = chip_id_ptr[0];
+	sys_inf_g.chip_ID[1] = chip_id_ptr[1];
+	sys_inf_g.chip_ID[2] = chip_id_ptr[2];
+
+	
+	//app_printf("CHIP_FLASH_SIZE: %x\n",*(unsigned int *)(__CHIP_FLASH_SIZE_ADDR));
+	app_printf("Chip ID: ");
+	app_puthex((const char *)sys_inf_g.chip_ID, 12);
+	
 }
 
 

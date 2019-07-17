@@ -24,6 +24,7 @@ static void msg_issue_task(void *pram)
  (void)pram;
 	struct key_val_t k_val;
 	
+
 	u32 k_msg = NO_ANY_MSG;
 	while(1)
 	{

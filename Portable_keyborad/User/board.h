@@ -4,6 +4,7 @@
 //#include "stm32f0xx_hal.h"
 struct  __sys_inf{
 	unsigned int sys_clk;
+	unsigned int chip_ID[3];
 };
 extern struct __sys_inf sys_inf_g;
 

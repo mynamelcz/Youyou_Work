@@ -51,7 +51,7 @@ static void loop_timer_fun_list(struct list_head *head)
 
 
 
-#if 0
+#if 1
 #define T_SecIRQ_Hdl(fn,Tx)   &(__timer##Tx##fn)
 
 #define INIT_TIMER_LOOP_FUN(fn, time, Tx, level)                                          \

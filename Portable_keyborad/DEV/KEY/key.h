@@ -25,6 +25,9 @@ struct key_val_t{
 
 
 
+
+
+
 struct key_msg_t{
 	u16 short_msg[APP_TOTAL_KEY_NUM];
 #if(APP_LONG_KEY_EN)
@@ -41,6 +44,8 @@ struct key_msg_t{
 
 void key_detect_init(void);
 u8 key_val_get(struct key_val_t *k_val);
+
+
 #endif
 
 
