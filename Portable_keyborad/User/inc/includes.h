@@ -13,6 +13,7 @@
 #include "cbuf.h"
 
 #include "app_cfg.h"
+#include "debug.h"
 #include "typdef.h"
 #include "common.h"
 

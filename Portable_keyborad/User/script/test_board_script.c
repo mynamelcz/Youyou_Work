@@ -76,8 +76,6 @@ void led_control(u8 state, u8 who)
 	}
 }
 
-
-
 static void test_board_script(void *pram)
 {
 	(void)pram;
@@ -106,8 +104,10 @@ static void test_board_script(void *pram)
 			}
 			switch(msg.msg[0]){
 				case HALF_SEC_MSG:
-				//	 tb_script_printf("script HF_MSG\n");
-				   
+						LOG_D("\r LOG_D \r");           
+						LOG_I("\r LOG_I \r");          
+						LOG_W("\r LOG_W \r");           
+						LOG_E("\r LOG_E \r"); 
 					 break;
 				
 				case TEST_IO_KEY_MSG:
